@@ -19,13 +19,13 @@ endfunction " }}}
 " Match both Lists and Dictionaries with the semantics of 'match()':
 " @signature:  mklib#collection#match({collection:List|Dictionary},
 "              {pattern:String}[, {index:Number}[, {count:Number}]][, {options:Dictionary])
+" @options:
+" - 'full'        to match as if the pattern was enclosed in '^...$' (default: 0)
+" - 'ignorecase'  0/1 to override &ignorecase (default: &ignorecase)
+" - 'pattern'     0 to match literally, 1 to match as pattern (default: 1)
 " @returns:    Number index (for Lists) or String key (for Dictionaries)
 " @exceptions: E605 if {collection} is not a List or Dictionary
-" @options:
-" - 'full': to match as if the pattern was enclosed in '^...$' (default: 0)
-" - 'ignorecase': 0/1 to override &ignorecase (default: &ignorecase)
-" - 'pattern': 0 to match literally, 1 to match as pattern (default: 1)
-" @notes: Dictionary items are processed in alphabetical order of their keys
+" @notes:      Dictionary items are processed in alphabetical order of their keys
 function! mklib#collection#match(collection, pattern, ...) abort " {{{
   if !mklib#collection#iscollection(a:collection)
     throw 'Not a collection type: '.string(a:list)

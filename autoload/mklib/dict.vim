@@ -2,11 +2,12 @@
 " Maintainer: Martin Kopischke <http://martin.kopischke.net>
 " License:    same as Vim (:h license)
 
-" @signature:  mklib#dict#conforms({dict:Dictionary}, {filter:Dictionary}[, {options:Dictionary])
-" @returns:    1 if all keys of {filter} are in {dict} and the values match, else 0
+" Test if if all keys of {filter} are in {dict} and the values match:
+" @signature:  mklib#dict#conforms({dict:Dictionary}, {filter:Dictionary}[, {options:Dictionary}])
 " @options:
-" - 'ignorecase': match key values with or without case (default: &ignorecase)
-" - 'pattern':    match key values as a pattern, not a literal (default: 0)
+" - 'ignorecase'  match values with or without case (default: &ignorecase)
+" - 'pattern'     match values as a pattern, not a literal (default: 0)
+" @returns:    Boolean Number (1/0)
 function! mklib#dict#conforms(dict, filter, ...) " {{{
   let l:ignorecase = a:0 ? get(a:1, 'ignorecase', &ignorecase) : &ignorecase
   let l:pattern    = a:0 ? get(a:1, 'pattern', 0) : 0
