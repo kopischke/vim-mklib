@@ -34,4 +34,29 @@ function! mklib#cursor#cword(...) abort " {{{
   return mklib#string#trim(expand(l:type))
 endfunction " }}}
 
+" Get spell checking status of the word under the cursor:
+" @signature:  mklib#cursor#spellstatus()
+" @returns:    a List containing:
+"              - the spell checking error as String, or the current word if
+"                no spelling error is detected (i.e. `<cword>`)
+"              – the spell checking status returned by `spellbadword(),
+"                or 'good' if no spelling error is detected
+" @see:        :h spellbadword() and :h <cword>
+function! mklib#cursor#spellstatus() abort " {{{
+  let l:status = [mklib#cursor#cword(), 'unknown']
+  if &spell && exists('*spellbadword')
+    let l:status[1]   = 'good'
+    let l:curpos      = getcurpos()
+    let l:spellstatus = spellbadword()
+    " `spellbadword()` only moves left to the start of the word if currently on
+    " a spelling error; if we are right of our position after calling it, it
+    " has jumped to another error (see `:h spellbadword()`).
+    if !empty(l:spellstatus[0]) && col('.') <= l:curpos[2]
+      let l:status = l:spellstatus
+    endif
+    call setpos('.', l:curpos)
+    return l:status
+  endif
+endfunction " }}}
+
 " vim:set sw=2 sts=2 ts=8 et fdm=marker fdo+=jump fdl=1::
