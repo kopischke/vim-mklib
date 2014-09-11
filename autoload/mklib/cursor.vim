@@ -23,4 +23,15 @@ function! mklib#cursor#prevchar() " {{{
   return matchstr(getline('.'), '.*\zs\%<'.col('.').'c.')
 endfunction " }}}
 
+" Get word under (or after) cursor, whitespace trimmed:
+" @signature:  mklib#cursor#word([{big:Number}])
+" @arguments:  'big': 0 to get <cword> (default if omitted)
+"                     1 to get <cWORD>
+" @returns:    the trimmed word String
+" @see:        :h <cword> and :h <cWORD>
+function! mklib#cursor#cword(...) abort " {{{
+  let l:type = get(a:, 1, 0) ? '<cWORD>' : '<cword>'
+  return mklib#string#trim(expand(l:type))
+endfunction " }}}
+
 " vim:set sw=2 sts=2 ts=8 et fdm=marker fdo+=jump fdl=1::
