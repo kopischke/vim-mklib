@@ -3,23 +3,23 @@
 " License:    same as Vim (:h license)
 
 " Get character under cursor:
-" @signature:  mklib#line#curchar()
+" @signature:  mklib#cursor#curchar()
 " @returns:    String of one (possibly multi-byte) character
-function! mklib#line#curchar() " {{{
+function! mklib#cursor#curchar() " {{{
   return matchstr(getline('.'), '\%'.col('.').'c.')
 endfunction " }}}
 
 " Get character before the cursor:
-" @signature:  mklib#line#nextchar()
+" @signature:  mklib#cursor#nextchar()
 " @returns:    String of one (possibly multi-byte) character
-function! mklib#line#nextchar() " {{{
+function! mklib#cursor#nextchar() " {{{
   return matchstr(getline('.'), '\%>'.col('.').'c.')
 endfunction " }}}
 
 " Get character after the cursor:
-" @signature:  mklib#line#prevchar()
+" @signature:  mklib#cursor#prevchar()
 " @returns:    String of one (possibly multi-byte) character
-function! mklib#line#prevchar() " {{{
+function! mklib#cursor#prevchar() " {{{
   return matchstr(getline('.'), '.*\zs\%<'.col('.').'c.')
 endfunction " }}}
 
