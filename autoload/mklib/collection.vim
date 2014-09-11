@@ -28,7 +28,7 @@ endfunction " }}}
 " @notes:      Dictionary items are processed in alphabetical order of their keys
 function! mklib#collection#match(collection, pattern, ...) abort " {{{
   if !mklib#collection#iscollection(a:collection)
-    throw 'Not a collection type: '.string(a:list)
+    throw 'Not a collection type: '.string(a:collection)
   endif
 
   " gather optional arguments, trailing dict = opts dict
