@@ -31,7 +31,7 @@ function! mklib#map#list(key, ...) abort " {{{
 
   " collect matching maps
   let l:cmd  = mklib#map#cmd4mode(l:noremap ? 'noremap' : 'map', l:mode)
-  let l:out  = mklib#script#out2list(l:cmd.' '.a:key)
+  let l:out  = mklib#ex#outlist(l:cmd.' '.a:key)
   let l:maps = map(filter(l:out, 'v:val !=? "No mapping found"'), 'split(v:val, "\\s\\+")[1]')
 
   return empty(l:filter) ? l:maps : filter(l:maps, 'mklib#map#exists(v:val, l:filter)')
