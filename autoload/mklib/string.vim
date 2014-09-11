@@ -75,13 +75,34 @@ endfunction " }}}
 " - mklib#string#wrap('Foo', '"')      => '"Foo"'
 " - mklib#string#wrap('Foo', '>', '<') => '>Foo<'
 " - mklib#string#wrap('"Foo"', '"')    => '"Foo"'
-" - mklib#string#wrap('"Foo', '"')     => '""Foo"'
 function! mklib#string#wrap(string, delimiter, ...) abort " {{{
-  let l:string = mklib#string#string(a:string)
-  let l:ldelim = a:delimiter
-  let l:rdelim = a:0 ? a:1 : l:ldelim
-  let l:string = substitute(l:string, '^\V'.l:ldelim.'\m\(.\{-}\)\V'.l:rdelim.'\$', '\1', '')
-  return l:ldelim . l:string . l:rdelim
+  let l:args    = mklib#script#optparse(a:000, 2)
+  let l:wrapped = call(function('mklib#string#base'), [a:string, a:delimiter, l:args.opts])
+  return call(function('mklib#string#cap'), [l:wrapped, get(a:, '1', a:delimiter), l:args.opts])
+endfunction " }}}
+
+" Ensure {string} starts with {delimiter}, adding it if not present yet:
+" @signature:  mklib#string#base({string:Any}, {delimiter:String}[, {options:Dictionary}])
+" @options:    'collapse'  replace all starting delimiters by a single instance (default: 0)
+" @returns:    String {string} starting with {delimiter}
+function! mklib#string#base(string, delimiter, ...) abort " {{{
+  let l:collapse      = a:0 ? get(a:1, 'collapse', 0) : 0
+  let l:string        = mklib#string#string(a:string)
+  let l:escaped_delim = mklib#regex#escape(a:delimiter)
+  let l:pattern       = l:collapse ? '\%('.l:escaped_delim.'\)\+' : l:escaped_delim
+  return a:delimiter . substitute(l:string, '^\V'.l:pattern, '', '')
+endfunction " }}}
+
+" Ensure {string} ends with {delimiter}, adding it if not present yet:
+" @signature:  mklib#string#cap({string:Any}, {delimiter:String}[, {options:Dictionary}])
+" @options:    'collapse'  replace all ending delimiters by a single instance (default: 0)
+" @returns:    String {string} ending with {delimiter}
+function! mklib#string#cap(string, delimiter, ...) abort " {{{
+  let l:collapse      = a:0 ? get(a:1, 'collapse', 0) : 0
+  let l:string        = mklib#string#string(a:string)
+  let l:escaped_delim = mklib#regex#escape(a:delimiter)
+  let l:pattern       = l:collapse ? '\%('.l:escaped_delim.'\)\+' : l:escaped_delim
+  return substitute(l:string, '\V'.l:pattern.'\$', '', '') . a:delimiter
 endfunction " }}}
 
 " Capitalize {string}:
