@@ -42,21 +42,19 @@ endfunction " }}}
 " @returns:    String {string} with leading and trailing matches of {pattern} removed
 " @notes:      {pattern} defaults to whitespace if omitted
 function! mklib#string#trim(string, ...) abort " {{{
-  let l:string = mklib#string#string(a:string)
-  return a:0 ?
-  \ mklib#string#ltrim(mklib#string#rtrim(l:string, a:1), a:1) :
-  \ matchstr(l:string, '\S.\+\S')
-endfunction " }}} " }}}
+  let l:string  = mklib#string#string(a:string)
+  let l:pattern = a:0 ? '\%('.a:1.'\)\+' : '\s\+'
+  return mklib#string#ltrim(mklib#string#rtrim(l:string, l:pattern), l:pattern)
+endfunction " }}}
 
 " Like trim(), but only trim leading {pattern}:
 " @signature:  mklib#string#ltrim({string:Any}[, {pattern:String}])
 " @returns:    String {string} with leading matches of {pattern} removed
 " @notes:      {pattern} defaults to whitespace if omitted
 function! mklib#string#ltrim(string, ...) abort " {{{
-  let l:string = mklib#string#string(a:string)
-  return a:0 ?
-  \ substitute(l:string, '^\('.a:1.'\)\+', '', '') :
-  \ matchstr(l:string, '\S.\+$')
+  let l:string  = mklib#string#string(a:string)
+  let l:pattern = a:0 ? '\%('.a:1.'\)\+' : '\s\+'
+  return substitute(l:string, '^'.l:pattern, '', '')
 endfunction " }}}
 
 " Like trim(), but only trim trailing {pattern}:
@@ -64,11 +62,10 @@ endfunction " }}}
 " @returns:    String {string} with trailing matches of {pattern} removed
 " @notes:      {pattern} defaults to whitespace if omitted
 function! mklib#string#rtrim(string, ...) abort " {{{
-  let l:string = mklib#string#string(a:string)
-  return a:0 ?
-  \ substitute(l:string, '\('.a:1.'\)\+$', '', '') :
-  \ matchstr(l:string, '^.\+\S')
-endfunction " }}} " }}}
+  let l:string  = mklib#string#string(a:string)
+  let l:pattern = a:0 ? '\%('.a:1.'\)\+' : '\s\+'
+  return substitute(l:string, l:pattern.'$', '', '')
+endfunction " }}}
 
 " Ensure {string} is wrapped in a  pair of {delimiter} or
 " {delimiter}/{end_delimiter}, adding them if not present yet:
