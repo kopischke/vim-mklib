@@ -17,13 +17,11 @@ function! mklib#script#optparse(args, ...) abort " {{{
   let l:args = copy(a:args)[: get(a:, 1, 0)-1]
 
   " a trailing Dictionary is always an opts Dictionary
-  if mklib#script#isdict(l:args[-1])
+  if !empty(l:args) && mklib#script#isdict(l:args[-1])
     let l:opts = l:args[-1]
-    let l:args = l:args[:-2]
-  else
-    let l:opts = {}
+    let l:args = len(l:args) > 1 ? l:args[:-2] : []
   endif
-  return {'args': l:args, 'opts': l:opts}
+  return {'args': l:args, 'opts': get(l:, 'opts', {})}
 endfunction " }}}
 
 " Find script number by file name:
